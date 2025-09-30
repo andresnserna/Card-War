@@ -6,3 +6,17 @@
 //
 
 import Foundation
+import SwiftUI
+
+struct PlayerSelectView: View {
+    var body: some View {
+        VStack {
+            Text("PlayerSelectView")
+        }
+        .padding()
+    }
+}
+
+#Preview {
+    PlayerSelectView()
+}

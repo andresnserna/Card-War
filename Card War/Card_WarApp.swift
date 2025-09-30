@@ -11,7 +11,7 @@ import SwiftUI
 struct Card_WarApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            PlayerSelectView()
         }
     }
 }
