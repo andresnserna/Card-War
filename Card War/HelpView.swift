@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct HelpView: View {
+    let playerCount: Int // ADD THIS LINE
+    @Environment(\.dismiss) private var dismiss // ADD THIS LINE
+    
     var body: some View {
         ZStack {
             Color(.white)
@@ -17,8 +20,8 @@ struct HelpView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
                     HStack {
-                        //figure out how to make this view change to the game view
-                        Button(action: {GameView()}) {
+                        // REPLACE the entire Button block with this:
+                        Button(action: { dismiss() }) {
                             Image(systemName: "chevron.left")
                                 .foregroundColor(.blue)
                                 .font(.headline)
@@ -274,5 +277,5 @@ struct HelpView: View {
 }
 
 #Preview {
-    HelpView()
+    HelpView(playerCount: 2)
 }

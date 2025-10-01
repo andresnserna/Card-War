@@ -5,6 +5,13 @@
 //  Created by Andrés Serna on 9/29/25.
 //
 
+//
+//  Card.swift
+//  Card War
+//
+//  Created by Andrés Serna on 9/29/25.
+//
+
 import Foundation
 
 enum Suit: String, CaseIterable {
@@ -13,6 +20,16 @@ enum Suit: String, CaseIterable {
     case clubs = "♣️"
     case spades = "♠️"
     case none = "" // for jokers
+    
+    var imageName: String {
+        switch self {
+        case .hearts: return "hearts"
+        case .diamonds: return "diamonds"
+        case .clubs: return "clubs"
+        case .spades: return "spades"
+        case .none: return ""
+        }
+    }
 }
 
 enum Rank: Int, CaseIterable {
@@ -41,6 +58,17 @@ enum Rank: Int, CaseIterable {
         default: return "\(self.rawValue)"
         }
     }
+    
+    var imageName: String {
+        switch self {
+        case .ace: return "A"
+        case .jack: return "J"
+        case .queen: return "Q"
+        case .king: return "K"
+        case .joker: return "J"
+        default: return "\(self.rawValue)"
+        }
+    }
 }
 
 struct Card: Identifiable, Equatable {
@@ -53,6 +81,14 @@ struct Card: Identifiable, Equatable {
             return "🃏"
         }
         return "\(rank.displayName)\(suit.rawValue)"
+    }
+    
+    // Image name matching your "rank_suit" convention
+    var imageName: String {
+        if rank == .joker {
+            return "J"
+        }
+        return "\(rank.imageName)_\(suit.imageName)"
     }
     
     // Compare cards according to game rules

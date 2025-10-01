@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 class GameLogic: ObservableObject {
     @Published var players: [Player]
@@ -45,6 +46,8 @@ class GameLogic: ObservableObject {
         // TODO: Implement win logic
     }
 }
+
+
 
 enum GamePhase {
     case drawing

@@ -9,11 +9,18 @@ import Foundation
 import SwiftUI
 
 struct GameView: View {
-    @State var playerCount = 0
+    let playerCount: Int
+    @StateObject private var gameLogic: GameLogic
+    @State private var showHelp = false
+    @Environment(\.dismiss) private var dismiss
+    
+    init(playerCount: Int) {
+            self.playerCount = playerCount
+            _gameLogic = StateObject(wrappedValue: GameLogic(playerCount: playerCount))
+    }
     
     var body: some View {
         ZStack {
-            
             Image("background")
                 .resizable()
                 .ignoresSafeArea(edges: .all)
@@ -22,8 +29,7 @@ struct GameView: View {
                 Spacer()
                 HStack {
                     Spacer()
-                    //figure out how to make this view change to the help view
-                    Button(action: {HelpView()}) {
+                    Button(action: { showHelp = true }) {
                         Text("Help")
                             .padding()
                             .overlay(content: {
@@ -31,32 +37,35 @@ struct GameView: View {
                                     .stroke(style: StrokeStyle(lineWidth: 1))
                             })
                             .foregroundColor(.white)
-                        
                     }
                     .padding()
                 }
             }
-            //main game stack
+            
+            // Main game stack - deck in center
             VStack {
-                Text("Player Count is: \(playerCount)")
+                Spacer()
+                
+                DeckView(deck: gameLogic.deck)
+                    .onTapGesture {
+                        // TODO: Handle card drawing
+                        print("Deck tapped - \(gameLogic.deck.count) cards remaining")
+                    }
+                
+                Spacer()
+                
+                // Debug info
+                Text("\(gameLogic.deck.count) cards remaining")
                     .foregroundColor(.white)
-                if playerCount == 2 {
-                    
-                } else if playerCount == 3 {
-                    
-                } else if playerCount == 4 {
-                    
-                } else if playerCount == 5 {
-                    
-                } else {
-                    
-                }
+                    .padding()
             }
-            .padding()
+        }
+        .sheet(isPresented: $showHelp) {
+            HelpView(playerCount: playerCount)
         }
     }
 }
 
 #Preview {
-    GameView()
+    GameView(playerCount: 2)
 }

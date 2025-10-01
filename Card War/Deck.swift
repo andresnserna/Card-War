@@ -2,7 +2,7 @@
 //  Deck.swift
 //  Card War
 //
-//  Created by Andrés Serna on 9/29/25.
+//  Created by AndrÃ©s Serna on 9/29/25.
 //
 
 import Foundation
