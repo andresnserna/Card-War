@@ -13,6 +13,7 @@ struct GameView: View {
     @StateObject private var gameLogic: GameLogic
     @State private var showHelp = false
     @Environment(\.dismiss) private var dismiss
+    @State private var showEndGameAlert = false
     
     init(playerCount: Int) {
             self.playerCount = playerCount
@@ -60,10 +61,50 @@ struct GameView: View {
                     .padding()
             }
         }
-        .sheet(isPresented: $showHelp) {
-            HelpView(playerCount: playerCount)
-        }
+        .navigationBarBackButtonHidden(true) // ADD THIS LINE
+            .toolbar { // ADD THIS ENTIRE TOOLBAR BLOCK
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button(action: { showEndGameAlert = true }) {
+                        HStack(spacing: 4) {
+                            Image(systemName: "chevron.left")
+                            Text("Back")
+                        }
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 8)
+                        .overlay(content: {
+                            RoundedRectangle(cornerRadius: 12)
+                                .stroke(style: StrokeStyle(lineWidth: 1))
+                        })
+                        .foregroundColor(.white)
+                    }
+                }
+            }
+            .alert("End Game?", isPresented: $showEndGameAlert) {
+                Button("Cancel", role: .cancel) { }
+                Button("End Game", role: .destructive) {
+                    endGame()
+                    dismiss()
+                }
+            } message: {
+                Text("Going back will end the current game. Are you sure?")
+            }
+            .sheet(isPresented: $showHelp) {
+                HelpView(playerCount: playerCount)
+            }
     }
+    
+        private func endGame() {
+            // Reset game state
+            gameLogic.deck.reset()
+            gameLogic.currentPhase = .drawing
+            gameLogic.drawnCards = Array(repeating: nil, count: playerCount)
+            
+            // Reset all players
+            for player in gameLogic.players {
+                player.collectedCards.removeAll()
+                player.resetForNextRound()
+            }
+        }
 }
 
 #Preview {
