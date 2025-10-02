@@ -12,6 +12,7 @@ class Player: Identifiable, ObservableObject {
     @Published var collectedCards: [Card] = []
     @Published var currentCard: Card? = nil
     @Published var hasDrawn: Bool = false
+    @Published var isFlipped: Bool = false
     
     var cardCount: Int {
         return collectedCards.count
@@ -27,7 +28,7 @@ class Player: Identifiable, ObservableObject {
     }
     
     func flipCard() {
-        // Animation trigger - card is already set, this is just for state
+        isFlipped = true
     }
     
     func collectCards(_ cards: [Card]) {
@@ -37,6 +38,7 @@ class Player: Identifiable, ObservableObject {
     func resetForNextRound() {
         currentCard = nil
         hasDrawn = false
+        isFlipped = false
     }
     
     var displayName: String {
