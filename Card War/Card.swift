@@ -65,7 +65,7 @@ enum Rank: Int, CaseIterable {
         case .jack: return "J"
         case .queen: return "Q"
         case .king: return "K"
-        case .joker: return "J"
+        case .joker: return "joker1"
         default: return "\(self.rawValue)"
         }
     }
@@ -86,7 +86,7 @@ struct Card: Identifiable, Equatable {
     // Image name matching your "rank_suit" convention
     var imageName: String {
         if rank == .joker {
-            return "J"
+            return "joker1"
         }
         return "\(rank.imageName)_\(suit.imageName)"
     }
