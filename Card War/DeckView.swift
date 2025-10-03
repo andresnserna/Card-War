@@ -9,7 +9,7 @@ import SwiftUI
 
 struct DeckView: View {
     let deck: Deck
-    let frameSize: CGFloat = 120
+    let frameSize: CGFloat = 100
     
     var body: some View {
         ZStack {

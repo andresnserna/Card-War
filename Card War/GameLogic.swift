@@ -68,12 +68,11 @@ class GameLogic: ObservableObject {
         }
         
         // Small delay to show the flip, then resolve
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             self.resolveRound()
         }
     }
     
-    // REPLACE resolveRound function with this:
     func resolveRound() {
         guard currentPhase == .resolving else { return }
         

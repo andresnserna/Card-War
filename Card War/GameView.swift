@@ -100,7 +100,7 @@ struct GameView: View {
                         Image("card_back")
                             .resizable()
                             .scaledToFit()
-                            .frame(width: 80, height: 80)
+                            .frame(width: 100, height: 100)
                             .rotation3DEffect(.degrees(isFlipped ? 0 : 180), axis: (x: 0, y: 1, z: 0))
                             .opacity(isFlipped ? 0 : 1)
                             .zIndex(isFlipped ? 0 : 1)
@@ -109,7 +109,7 @@ struct GameView: View {
                         Image(card.imageName)
                             .resizable()
                             .scaledToFit()
-                            .frame(width: 80, height: 80)
+                            .frame(width: 100, height: 100)
                             .rotation3DEffect(.degrees(isFlipped ? 180 : 0), axis: (x: 0, y: 1, z: 0))
                             .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
                             .zIndex(isFlipped ? 1 : 0)
@@ -121,7 +121,7 @@ struct GameView: View {
                             .padding(4)
                             .background(Color.black.opacity(0.6))
                             .cornerRadius(4)
-                            .offset(y: 50)
+                            .offset(y: 70)
                     }
                     .position(currentPosition)
                     .matchedGeometryEffect(id: "card-\(index)", in: cardAnimation)
@@ -196,6 +196,7 @@ struct GameView: View {
         } message: {
             Text("Going back will end the current game. Are you sure?")
         }
+        
         .alert("Game Over!", isPresented: $showGameOverAlert) {
             Button("Leave", role: .destructive) {
                 dismiss()
@@ -206,6 +207,7 @@ struct GameView: View {
         } message: {
             Text(gameLogic.finalScoresMessage)
         }
+        
         .sheet(isPresented: $showHelp) {
             HelpView(playerCount: playerCount)
         }
@@ -225,7 +227,7 @@ struct GameView: View {
         .onChange(of: gameLogic.currentPhase) { oldPhase, newPhase in
             // Reset animation flag when starting new round
             if newPhase == .drawing {
-                animateCardDraw = false
+                animatedPlayers.removeAll()
             }
         }
     }

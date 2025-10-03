@@ -86,7 +86,7 @@ struct Card: Identifiable, Equatable {
     // Image name matching your "rank_suit" convention
     var imageName: String {
         if rank == .joker {
-            return "joker1"
+            return Bool.random() ? "joker_1" : "joker_2"
         }
         return "\(rank.imageName)_\(suit.imageName)"
     }
