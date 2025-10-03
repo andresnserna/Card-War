@@ -18,6 +18,7 @@ struct GameView: View {
     @State private var showEndGameAlert = false
     @Namespace private var cardAnimation
     @State private var showGameOverAlert = false
+    @State private var animatedPlayers: Set<Int> = []
     
     init(playerCount: Int) {
             self.playerCount = playerCount
@@ -88,23 +89,30 @@ struct GameView: View {
             ForEach(gameLogic.players.indices, id: \.self) { index in
                 if let card = gameLogic.players[index].currentCard {
                     let position = cardPosition(for: index)
+                    let isFlipped = gameLogic.players[index].isFlipped
+                    let currentPosition = animatedPlayers.contains(index)
+                        ? position
+                        : CGPoint(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 2)
+                                       
                     
                     ZStack {
-                        if gameLogic.currentPhase == .drawing ||
-                           (gameLogic.currentPhase == .flipping && !gameLogic.players[index].isFlipped) {
-                            // Show card back
-                            Image("card_back")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 80, height: 80)
-                        } else {
-                            // Show card face
-                            Image(card.imageName)
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 80, height: 80)
-                                .transition(.scale)
-                        }
+                        // Show card back
+                        Image("card_back")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 80, height: 80)
+                            .rotation3DEffect(.degrees(isFlipped ? 0 : 180), axis: (x: 0, y: 1, z: 0))
+                            .opacity(isFlipped ? 0 : 1)
+                            .zIndex(isFlipped ? 0 : 1)
+                  
+                        // Show card face
+                        Image(card.imageName)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 80, height: 80)
+                            .rotation3DEffect(.degrees(isFlipped ? 180 : 0), axis: (x: 0, y: 1, z: 0))
+                            .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
+                            .zIndex(isFlipped ? 1 : 0)
                         
                         // Player label
                         Text(gameLogic.players[index].displayName)
@@ -115,10 +123,10 @@ struct GameView: View {
                             .cornerRadius(4)
                             .offset(y: 50)
                     }
-                    .position(position)
+                    .position(currentPosition)
                     .matchedGeometryEffect(id: "card-\(index)", in: cardAnimation)
-                    .animation(.spring(response: 0.6, dampingFraction: 0.7), value: position)
-                    .animation(.easeInOut(duration: 0.3), value: gameLogic.players[index].isFlipped)
+                    .animation(.spring(response: 0.6, dampingFraction: 0.7), value: currentPosition)
+                    .animation(.easeInOut(duration: 0.5), value: isFlipped)
                 }
             }
             
@@ -204,6 +212,20 @@ struct GameView: View {
         .onChange(of: gameLogic.currentPhase) { oldPhase, newPhase in
             if newPhase == .gameOver {
                 showGameOverAlert = true
+            }
+            if newPhase == .drawing {
+                animatedPlayers.removeAll()
+            }
+        }
+        .onChange(of: gameLogic.currentPlayerIndex) { oldValue, newValue in
+            if oldValue < gameLogic.players.count {
+                animatedPlayers.insert(oldValue)
+            }
+        }
+        .onChange(of: gameLogic.currentPhase) { oldPhase, newPhase in
+            // Reset animation flag when starting new round
+            if newPhase == .drawing {
+                animateCardDraw = false
             }
         }
     }
