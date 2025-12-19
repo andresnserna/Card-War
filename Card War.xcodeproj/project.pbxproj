@@ -11,6 +11,11 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		5538EFE52EF5F23C001678A5 /* screenshots */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = screenshots;
+			sourceTree = "<group>";
+		};
 		55A9D1382E8B6CBF00242842 /* Card War */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = "Card War";
@@ -34,6 +39,7 @@
 			children = (
 				55A9D1382E8B6CBF00242842 /* Card War */,
 				55A9D1372E8B6CBF00242842 /* Products */,
+				5538EFE52EF5F23C001678A5 /* screenshots */,
 			);
 			sourceTree = "<group>";
 		};
@@ -61,6 +67,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
+				5538EFE52EF5F23C001678A5 /* screenshots */,
 				55A9D1382E8B6CBF00242842 /* Card War */,
 			);
 			name = "Card War";
